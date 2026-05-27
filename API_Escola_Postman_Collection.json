@@ -1,0 +1,117 @@
+{
+    "info": {
+        "name": "API Escola MVC",
+        "_postman_id": "12345678-api-escola",
+        "description": "Collection CRUD de professores com Node.js, Express e MySQL",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Listar Professores",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/professores",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "professores"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Buscar Professor por ID",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/professores/1",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "professores",
+                        "1"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Cadastrar Professor",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"nome\": \"João Teste\",\n  \"disciplina\": \"Matemática\",\n  \"email\": \"joao.teste@example.com\",\n  \"salario\": 4500\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/professores",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "professores"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Atualizar Professor",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"nome\": \"Maria Atualizada\",\n  \"disciplina\": \"Física\",\n  \"email\": \"maria.atualizada@example.com\",\n  \"salario\": 5200\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/professores/1",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "professores",
+                        "1"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Remover Professor",
+            "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/professores/1",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "professores",
+                        "1"
+                    ]
+                }
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:3000"
+        }
+    ]
+}
