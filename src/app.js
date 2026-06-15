@@ -1,17 +1,25 @@
-// Importa o framework Express para criar a API
-const express = require('express')
+// Importa express
+const express = require('express');
 
-// Importa o conjunto de rotas relacionadas aos professores
-const professorRouter = require('./routes/professorRouter')
+// Cria aplicação
+const app = express();
 
-// Cria a aplicação Express
-const app = express()
+// Habilita JSON
+app.use(express.json());
 
-// Permite que o Express faça o parse de requisições JSON no corpo
-app.use(express.json())
+// Importa rotas
+const professorRoutes = require('./routes/professorRoutes');
+const disciplinaRoutes = require('./routes/disciplinaRoutes');
 
-// Monta o roteador de professores em /professores
-app.use('/professores', professorRouter)
+// Define rotas
+app.use('/professores', professorRoutes);
+app.use('/disciplinas', disciplinaRoutes);
 
-// Exporta a aplicação para ser iniciada em server.js
-module.exports = app
+// Exporta a aplicação para testes e reutilização
+module.exports = app;
+
+// Inicia servidor apenas quando executado diretamente
+if (require.main === module) {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => console.log(`Servidor iniciado na porta ${PORT}`));
+}

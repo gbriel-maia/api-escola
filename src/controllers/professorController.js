@@ -1,57 +1,72 @@
-// Importa o módulo de acesso ao banco de dados para professores
-const model = require('../models/professorModel.js')
+// Importa o serviço de professor para acessar a regra de negócio.
+const ProfessorService =
+require("../services/professorService");
 
-// Retorna a lista de todos os professores cadastrados
-const listAllProfessors = async (req, res) => {
-    const professors = await model.listAllProfessors()
-    res.json(professors)
-}
+// Define a classe responsável por controlar as requisições de professor.
+class ProfessorController {
 
-// Retorna um professor pelo ID passado como parâmetro de rota
-const searchProfessorID = async (req, res) => {
-    const { id } = req.params
-    const professor = await model.searchProfessorID(id)
+    // Lista todos os professores cadastrados.
+    static async listar(req, res) {
 
-    if (!professor) {
-        return res.status(404).json({ message: 'Not Found' })
+        // Busca a lista de professores no serviço.
+        const professores =
+        await ProfessorService.listar();
+
+        // Envia a lista no formato JSON como resposta.
+        res.json(professores);
     }
 
-    res.json(professor)
-}
+    // Busca um professor pelo ID informado na rota.
+    static async buscarPorId(req, res) {
 
-// Cria um novo registro de professor a partir do corpo da requisição
-const createProfessor = async (req, res) => {
-    const { nome, disciplina, email, salario } = req.body
+        // Busca o professor correspondente no serviço.
+        const professor =
+        await ProfessorService.buscarPorId(
+            req.params.id
+        );
 
-    // Validação básica de campos obrigatórios
-    if (!nome || !disciplina || !email || salario == null) {
-        return res.status(400).json({ message: 'nome, disciplina, email and salario are required' })
+        // Retorna o professor encontrado em formato JSON.
+        res.json(professor);
     }
 
-    const professor = { nome, disciplina, email, salario }
-    const createdId = await model.createProfessor(professor)
+    // Cria um novo professor com os dados recebidos no corpo da requisição.
+    static async criar(req, res) {
 
-    res.status(201).json({ message: 'Submitted', id: createdId })
+        // Envia os dados recebidos para o serviço criar o registro.
+        const resultado =
+        await ProfessorService.criar(req.body);
+
+        // Retorna o resultado com status 201 (criado).
+        res.status(201).json(resultado);
+    }
+
+    // Atualiza os dados de um professor existente.
+    static async atualizar(req, res) {
+
+        // Chama o serviço para atualizar o professor informado.
+        const resultado =
+        await ProfessorService.atualizar(
+            req.params.id,
+            req.body
+        );
+
+        // Retorna o resultado da atualização em JSON.
+        res.json(resultado);
+    }
+
+    // Remove um professor pelo ID informado.
+    static async excluir(req, res) {
+
+        // Solicita a exclusão do professor ao serviço.
+        const resultado =
+        await ProfessorService.excluir(
+            req.params.id
+        );
+
+        // Envia a resposta da exclusão em JSON.
+        res.json(resultado);
+    }
 }
 
-// Atualiza os dados de um professor existente pelo ID
-const updateProfessor = async (req, res) => {
-    const { id } = req.params
-    const { nome, disciplina, email, salario } = req.body
-
-    const professor = { nome, disciplina, email, salario }
-    await model.updateProfessor(id, professor)
-
-    res.json({ message: 'Updated' })
-}
-
-// Exclui um professor pelo ID passado na rota
-const deleteProfessor = async (req, res) => {
-    const { id } = req.params
-
-    await model.deleteProfessor(id)
-    res.json({ message: 'Deleted' })
-}
-
-// Exporta as ações para o roteador usar
-module.exports = { listAllProfessors, searchProfessorID, createProfessor, updateProfessor, deleteProfessor }
+// Exporta a classe para uso nas rotas.
+module.exports = ProfessorController;

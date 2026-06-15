@@ -1,44 +1,85 @@
-// Importa a conexão com o banco de dados MySQL a partir do pool configurado
-const poll = require('../config/db')
+// Importa a conexão com o banco de dados
+const db = require("../config/database");
 
-// Busca todos os professores na tabela 'professores'
-const listAllProfessors = async () => {
-    const [rows] = await poll.execute('select * from professores')
-    return rows
+// Cria a classe responsável pelas operações da tabela professor
+class ProfessorModel {
+
+    // Método para listar todos os professores
+    static async listar() {
+
+        // Executa o comando SQL
+        const [rows] = await db.execute(
+            "SELECT * FROM professor"
+        );
+
+        // Retorna os registros encontrados
+        return rows;
+    }
+
+    // Método para buscar um professor pelo ID
+    static async buscarPorId(id) {
+
+        // Executa a consulta utilizando parâmetro
+        const [rows] = await db.execute(
+            "SELECT * FROM professor WHERE id = ?",
+            [id]
+        );
+
+        // Retorna apenas o primeiro registro encontrado
+        return rows[0];
+    }
+
+    // Método para inserir professor
+    static async criar(nome, email) {
+
+        // Executa o INSERT
+        const [resultado] = await db.execute(
+
+            // Comando SQL
+            "INSERT INTO professor (nome, email) VALUES (?, ?)",
+
+            // Valores que substituirão os ?
+            [nome, email]
+        );
+
+        // Retorna o resultado da operação
+        return resultado;
+    }
+
+    // Método para atualizar professor
+    static async atualizar(id, nome, email) {
+
+        // Executa o UPDATE
+        const [resultado] = await db.execute(
+
+            // SQL de atualização
+            "UPDATE professor SET nome = ?, email = ? WHERE id = ?",
+
+            // Valores dos parâmetros
+            [nome, email, id]
+        );
+
+        // Retorna resultado
+        return resultado;
+    }
+
+    // Método para excluir professor
+    static async excluir(id) {
+
+        // Executa o DELETE
+        const [resultado] = await db.execute(
+
+            // SQL de exclusão
+            "DELETE FROM professor WHERE id = ?",
+
+            // ID recebido
+            [id]
+        );
+
+        // Retorna resultado
+        return resultado;
+    }
 }
 
-// Busca um único professor pelo ID e retorna o primeiro resultado
-const searchProfessorID = async (id) => {
-    const [rows] = await poll.execute('select * from professores where id = ?', [id])
-    return rows[0]
-}
-
-// Insere um novo professor no banco de dados e retorna o ID gerado
-const createProfessor = async (professor) => {
-    const { nome, disciplina, email, salario } = professor
-    const [result] = await poll.execute(
-        'insert into professores (nome, disciplina, email, salario) values (?, ?, ?, ?)',
-        [nome, disciplina, email, salario]
-    )
-
-    return result.insertId
-}
-
-// Atualiza os dados de um professor existente pelo ID
-const updateProfessor = async (id, professor) => {
-    const { nome, disciplina, email, salario } = professor
-
-    await poll.execute(
-        'update professores set nome = ?, disciplina = ?, email = ?, salario = ? where id = ?',
-        [nome, disciplina, email, salario, id]
-    )
-}
-
-// Remove um professor da tabela pelo ID fornecido
-const deleteProfessor = async (id) => {
-    const sql = 'delete from professores where id = ?'
-    await poll.execute(sql, [id])
-}
-
-// Exporta as funções do modelo para serem usadas pelo controlador
-module.exports = { listAllProfessors, searchProfessorID, createProfessor, updateProfessor, deleteProfessor }
+// Exporta a classe
+module.exports = ProfessorModel;

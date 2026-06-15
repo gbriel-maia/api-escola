@@ -1,11 +1,14 @@
 CREATE DATABASE escola;
-
 USE escola;
-
-CREATE TABLE professores (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100) NOT NULL,
-    disciplina VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    salario DECIMAL(10,2) NOT NULL
+CREATE TABLE professor(
+ id INT PRIMARY KEY AUTO_INCREMENT,
+ nome VARCHAR(100) NOT NULL,
+ email VARCHAR(100) NOT NULL
+);
+CREATE TABLE disciplina(
+ id INT PRIMARY KEY AUTO_INCREMENT,
+ nome VARCHAR(100) NOT NULL,
+ carga_horaria INT NOT NULL,
+ professor_id INT NOT NULL,
+ FOREIGN KEY(professor_id) REFERENCES professor(id)
 );

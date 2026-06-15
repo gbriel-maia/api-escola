@@ -44,68 +44,41 @@ O servidor roda por padrão em `http://localhost:3000`.
 
 ## Rotas da API
 
-A API expõe as operações CRUD para o recurso `professores`.
+A API expõe as operações CRUD para os recursos `professores` e `disciplinas`.
 
-### Listar todos os professores
+### Professores
 
-GET
+- Listar todos: GET /professores
+- Buscar por ID: GET /professores/:id
+- Criar: POST /professores
+- Atualizar: PUT /professores/:id
+- Excluir: DELETE /professores/:id
 
-```text
-http://localhost:3000/professores
-```
+### Disciplinas
 
-### Buscar professor por ID
+- Listar todas: GET /disciplinas
+- Buscar por ID: GET /disciplinas/:id
+- Criar: POST /disciplinas
+- Atualizar: PUT /disciplinas/:id
+- Excluir: DELETE /disciplinas/:id
 
-GET
-
-```text
-http://localhost:3000/professores/1
-```
-
-### Criar um novo professor
-
-POST
-
-```text
-http://localhost:3000/professores
-```
-
-Body JSON:
+Exemplo de corpo para criar ou atualizar um professor:
 
 ```json
 {
   "nome": "João",
-  "disciplina": "Matemática",
-  "email": "joao@gmail.com",
-  "salario": 4500
+  "email": "joao@gmail.com"
 }
 ```
 
-### Atualizar um professor
-
-PUT
-
-```text
-http://localhost:3000/professores/1
-```
-
-Body JSON:
+Exemplo de corpo para criar ou atualizar uma disciplina:
 
 ```json
 {
-  "nome": "João Silva",
-  "disciplina": "Matemática",
-  "email": "joaosilva@gmail.com",
-  "salario": 4800
+  "nome": "Matemática",
+  "carga_horaria": 80,
+  "professor_id": 1
 }
-```
-
-### Deletar um professor
-
-DELETE
-
-```text
-http://localhost:3000/professores/1
 ```
 
 ---
@@ -114,4 +87,4 @@ http://localhost:3000/professores/1
 
 - As requisições devem ser enviadas com `Content-Type: application/json` para endpoints que recebem corpo.
 - A aplicação usa `mysql2/promise` para conectar ao banco de dados com pool de conexões.
-- Caso a porta `3000` já esteja em uso, altere o valor da constante `port` em `server.js`.
+- O arquivo `database.sql` define as tabelas necessárias para `professor` e `disciplina`.
